@@ -16,5 +16,8 @@ urlpatterns = [
 
     
     path('message/', views.MessageCreateView.as_view()),
+    path('me/messages/', views.MeMessageView.as_view()),
+    path('me/messages/<int:pk>', views.MessageUpdateDestroyView.as_view()),
+
 
 ]

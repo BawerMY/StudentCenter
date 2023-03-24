@@ -7,7 +7,7 @@ class User(AbstractUser):
 class Chat(models.Model):
     name = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats') # will be set default: default=User.objects.get(username = 'DELETED_USER')
-    description = models.TextField(max_length=10000)
+    description = models.TextField(max_length=10000, blank=True)
     def messages(self):
         msgs = []
         for msg in self.messagesR.all():

@@ -6,7 +6,7 @@ from django.contrib.auth import login
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ['id', 'username', 'hp', 'first_name', 'last_name']
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -32,11 +32,8 @@ class SingUpSerializer(serializers.ModelSerializer):
 class MeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'first_name', 'last_name']
-    # def update(self, data, request):
-    #     user = request.user
-    #     user[data.key] = data.value
-    #     user.save()
+        fields = ['username', 'email', 'first_name', 'last_name']
+
 class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
@@ -45,11 +42,16 @@ class ChatSerializer(serializers.ModelSerializer):
 class ChatCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
-        fields = ['name', 'description', 'pk']
+        fields = ['id', 'name']
     def create(self, data, user):
-        if data['type'] == 'chat': chat = Chat(name=data['name'], user=user)
-        if data['type'] == 'question': chat = Question(name=data['name'], user=user)
+        if data['type'] == 'chat': chat = Chat(name=data['name'], description=data['description'], user=user)
+        if data['type'] == 'question': chat = Question(name=data['name'], description=data['description'], user=user)
         chat.save()
+class UpdateChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chat
+        fields = ['id', 'description', 'name']
+    
 
 
 
