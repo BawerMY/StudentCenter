@@ -127,4 +127,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["http://bawermy.pythonanywhere.com/"]
