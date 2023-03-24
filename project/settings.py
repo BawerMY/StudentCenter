@@ -129,3 +129,4 @@ AUTH_USER_MODEL = 'core.User'
 
 ALLOWED_HOSTS = ["http://bawermy.pythonanywhere.com/"]
 CSRF_COOKIE_DOMAIN = 'http://bawermy.pythonanywhere.com/'
+CSRF_TRUSTED_ORIGINS = ['http://bawermy.pythonanywhere.com/']
