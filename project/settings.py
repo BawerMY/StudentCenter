@@ -25,9 +25,6 @@ SECRET_KEY = 'django-insecure-*c4l06z8)h^9_g3gg&q%h1#%mgm*b#z9e=%zv2t@oi$tjbye)b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -127,6 +124,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'
 
-ALLOWED_HOSTS = ["http://bawermy.pythonanywhere.com/"]
-CSRF_COOKIE_DOMAIN = 'http://bawermy.pythonanywhere.com/'
+ALLOWED_HOSTS = ["bawermy.pythonanywhere.com"]
+CSRF_COOKIE_DOMAIN = 'bawermy.pythonanywhere.com'
 CSRF_TRUSTED_ORIGINS = ['http://bawermy.pythonanywhere.com/']

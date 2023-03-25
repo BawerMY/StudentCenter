@@ -1,3 +1,4 @@
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -6,10 +7,7 @@ from rest_framework import permissions
 from django.contrib.auth import login, logout
 from .models import *
 from .serializer import *
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 
-@method_decorator(csrf_exempt, name='dispatch')
 class UsersView(APIView):
     def get(self, request, *args, **kwargs):
         if(kwargs): users = User.objects.filter(pk=self.kwargs['pk'])
@@ -17,7 +15,6 @@ class UsersView(APIView):
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
-@method_decorator(csrf_exempt, name='dispatch')
 class SingUpView(APIView):
     def get(self, request):
         return Response({
@@ -35,7 +32,6 @@ class SingUpView(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-@method_decorator(csrf_exempt, name='dispatch')
 class LoginView(APIView):
     def get(self, request):
         return Response({
@@ -49,13 +45,11 @@ class LoginView(APIView):
             login(request, user)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-@method_decorator(csrf_exempt, name='dispatch')
 class LogoutView(APIView):
     def post(self, request):
         logout(request)
         return Response(status=status.HTTP_200_OK)
 
-@method_decorator(csrf_exempt, name='dispatch')
 class MeView(APIView):
     def get(self, request):
         try:
@@ -88,7 +82,6 @@ class MeView(APIView):
 
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class ChatView(APIView):
     def get(self, request, *args, **kwargs):
         if(kwargs): chats = Chat.objects.filter(pk=kwargs['pk'])
@@ -101,7 +94,6 @@ class ChatView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.create(request.data, request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
-@method_decorator(csrf_exempt, name='dispatch')
 class ChatUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UpdateChatSerializer
 
@@ -112,19 +104,16 @@ class MeChatView(generics.ListAPIView):
     def get_queryset(self):
         return self.request.user.chats
 
-@method_decorator(csrf_exempt, name='dispatch')
 class MessageUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MessageSerializer
     def get_object(self):
         return self.request.user.messages
-@method_decorator(csrf_exempt, name='dispatch')
 class MeMessageView(generics.ListAPIView):
     serializer_class = MessageSerializer
     def get_queryset(self):
         return self.request.user.messages
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class MessageCreateView(generics.CreateAPIView):
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
