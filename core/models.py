@@ -22,6 +22,12 @@ class Chat(models.Model):
     def __str__(self):
         return self.name
 
+
+
+
+class Question(Chat):
+    answered = models.BooleanField(default=False)
+
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages') # will be set default: default=User.objects.get(username = 'DELETED_USER')
     message = models.TextField(max_length=10000)
@@ -33,5 +39,30 @@ class Message(models.Model):
 
 
 
-class Question(Chat):
-    answered = models.BooleanField(default=False)
+# class PrivateChat(models.Model):
+#     user1 = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='private_chats1')
+#     user2 = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='private_chats2')
+#     def messages(self):
+#         msgs = []
+#         for msg in self.private_messagesR.all():
+#             m = PrivateMessage.objects.get(id=msg.id)
+#             msgs.append({
+#                 'user': m.user.username,
+#                 'message': m.message,
+#                 'chat': m.chat.pk,
+#                 'id': msg.id
+#             })
+#         return msgs
+
+# class PrivateMessage(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='private_messages') # will be set default: default=User.objects.get(username = 'DELETED_USER')
+#     message = models.TextField(max_length=10000)
+#     chat = models.ForeignKey(PrivateChat, on_delete=models.CASCADE, related_name='private_messagesR')
+    
+#     def __str__(self) -> str:
+#         return f"{self.chat} {self.chat.user1}-{self.chat.user2}"
+
+
+
+
+

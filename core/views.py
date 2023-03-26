@@ -14,8 +14,8 @@ class UsersView(APIView):
         else: users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
-
 class SingUpView(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request):
         return Response({
             "username": "username",
@@ -27,29 +27,29 @@ class SingUpView(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.create(request.data)
             if user:
-                serializer = LoginSerializer(data=request.data)
-                user = serializer.login(request.data)
+                # serializer = LoginSerializer(data=request.data)
+                # user = serializer.login(request.data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-class LoginView(APIView):
-    def get(self, request):
-        return Response({
-            'username': 'username',
-            'password': 'password',
-        })
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.login(request.data)
-            login(request, user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+# class LoginView(APIView):
+#     # permission_classes = (permissions.AllowAny)
+#     # authentication_classes = (SessionAuthentication)
+#     def get(self, request):
+#         return Response({
+#             'username': 'username',
+#             'password': 'password',
+#         })
+#     def post(self, request):
+#         serializer = LoginSerializer(data=request.data)
+#         if serializer.is_valid(raise_exception=True):
+#             user = serializer.login(request.data)
+#             login(request, user)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
-    def post(self, request):
+    def get(self, request):
         logout(request)
         return Response(status=status.HTTP_200_OK)
-
 class MeView(APIView):
     def get(self, request):
         try:
@@ -103,7 +103,6 @@ class MeChatView(generics.ListAPIView):
     serializer_class = ChatCreateSerializer
     def get_queryset(self):
         return self.request.user.chats
-
 class MessageUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MessageSerializer
     def get_object(self):
@@ -112,12 +111,25 @@ class MeMessageView(generics.ListAPIView):
     serializer_class = MessageSerializer
     def get_queryset(self):
         return self.request.user.messages
-
-
 class MessageCreateView(generics.CreateAPIView):
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         return serializer.save(user = self.request.user)
+
+### maybe add privatechat
+# class PrivateChatView(generics.ListCreateAPIView):
+#     serializer_class = CreatePrivateChatSerializer
+#     def get_queryset(self):
+#         return  self.request.user.private_chats1
+#     def perform_create(self, serializer):
+#         return serializer.save(user1 = self.request.user)
+# class PrivateMessageView(APIView):
+#     def post(self, request):
+#         if(request.data['chat'])
+    
+
+
+
